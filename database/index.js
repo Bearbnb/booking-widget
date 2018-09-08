@@ -17,30 +17,6 @@ connection.connect((error, results) => {
 });
 
 
-// Inserts Houses Data
-
-// var data = [];
-//
-// for (let i = 0; i < 100; i++) {
-//   data.push([
-//     Math.random() * 5, // average_rating
-//     Math.random() * 250, // ratings
-//     Math.random() * 170, // cleaning_fee
-//     Math.random() * 120, // service_fee
-//     Math.random() * 12, // occupancy
-//   ]);
-// }
-//
-// connection.query('INSERT INTO houses (average_rating, ratings, cleaning_fee, service_fee, occupancy) VALUES ?', [data], (error, results) => {
-//   if (error) {
-//     console.log('ERROR insert to db failed');
-//   } else {
-//     console.log('Insert to db successful!');
-//     console.log(results);
-//   }
-// });
-
-
 const findAvailableDates = (houseNum, callback) => {
   connection.query(`SELECT calendar.booking_date FROM calendar
     INNER JOIN houses ON houses.house_id = calendar.house_id
@@ -67,9 +43,38 @@ const findHouseData = (houseNum, callback) => {
   });
 };
 
+const findHousePrice = (dateData, callback) => {
+  connection.query(`SELECT calendar.price FROM calendar WHERE calendar.booking_date = "${dateData.booking_date}" AND calendar.house_id = ${dateData.house_id}`, (error, results) => {
+    if (error) {
+      console.log('ERROR findHousePrice query failed');
+      callback(error, null);
+    } else {
+      console.log('findHousePrice query success!');
+      callback(null, results);
+    }
+  });
+};
 
+const insertBookingData = (bookingData, callback) => {
+
+  connection.query(`INSERT INTO booking (house_id, check_in, check_out, adults, children, infants, total_occupancy, price, cleaning_fee, service_fee, total_price)
+    VALUES (${bookingData.house_id}, "${bookingData.check_in}", "${bookingData.check_out}", ${bookingData.adults}, ${bookingData.children}, ${bookingData.infants}, ${bookingData.total_occupancy}, ${bookingData.price}, ${bookingData.cleaning_fee}, ${bookingData.service_fee}, ${bookingData.total_price})`, (error, results) => {
+    if (error) {
+      console.log('ERROR insertBookingData query failed', error);
+      callback(error, null);
+    } else {
+      console.log('insertBookingData query success!');
+      callback(null, results);
+    }
+  });
+}
+
+
+module.exports.connection = connection;
 module.exports.findAvailableDates = findAvailableDates;
 module.exports.findHouseData = findHouseData;
+module.exports.findHousePrice = findHousePrice;
+module.exports.insertBookingData = insertBookingData;
 
 // Test
 
@@ -87,5 +92,25 @@ module.exports.findHouseData = findHouseData;
 //     console.log(`ERROR findHouseData call failed`)
 //   } else {
 //     console.log(`findHouseData call success!`)
+//   }
+// })
+
+// findHousePrice({ booking_date: "2018-12-31", house_id: 99 }, (error, results) => {
+//   if (error) {
+//     console.log(`ERROR findHousePrice call failed`)
+//   } else {
+//     console.log(`findHousePrice call success!`)
+//   }
+// })
+
+// const bookingData = {
+//   house_id: 99, check_in: '2018-01-01', check_out: '2018-01-02', adults: 2, children: 2, infants: 0, total_occupancy: 4, price: 40, cleaning_fee: 67, service_fee: 20, total_price: 127,
+// };
+//
+// insertBookingData(bookingData, (error, results) => {
+//   if (error) {
+//     console.log(`ERROR insertBookingData call failed`)
+//   } else {
+//     console.log(`insertBookingData call success!`)
 //   }
 // })

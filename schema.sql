@@ -13,7 +13,7 @@ CREATE TABLE houses (
 
 CREATE TABLE calendar (
   id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  booking_date date,
+  booking_date DATE,
   house_id INT,
   availability TINYINT,
   price INT,
