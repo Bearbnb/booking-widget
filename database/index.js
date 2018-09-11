@@ -20,7 +20,7 @@ connection.connect((error, results) => {
 const findAvailableDates = (houseNum, callback) => {
   connection.query(`SELECT calendar.booking_date FROM calendar
     INNER JOIN houses ON houses.house_id = calendar.house_id
-    WHERE houses.house_id = ${houseNum}`, (error, results) => {
+    WHERE houses.house_id = ${houseNum} AND calendar.availability = 1`, (error, results) => {
     if (error) {
       console.log('ERROR findAvailableDates query failed');
       callback(error, null);
@@ -76,8 +76,7 @@ module.exports.findHouseData = findHouseData;
 module.exports.findHousePrice = findHousePrice;
 module.exports.insertBookingData = insertBookingData;
 
-// Test
-
+// Tests
 
 // findAvailableDates(1, (error, results) => {
 //   if (error) {
