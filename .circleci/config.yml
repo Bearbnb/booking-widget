@@ -1,9 +1,9 @@
 version: 2
 jobs:
   build:
-    working_directory: ~repo
+    working_directory: ~/repo
     docker:
-      - image: circle/node: 7
+      - image: circleci/node:6.13
     steps:
       - checkout
       - run: npm install
