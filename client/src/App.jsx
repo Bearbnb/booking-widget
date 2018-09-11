@@ -37,10 +37,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        Hello from react
-        <br />
-        <input type="submit"/>
         <Calendar />
+        <input type="submit" value="Book"/>
       </div>
     )
   }
