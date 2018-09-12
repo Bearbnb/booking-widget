@@ -20,6 +20,7 @@ class App extends React.Component {
       calendarClicked: false
     }
     this.checkInClick = this.checkInClick.bind(this)
+    this.checkInDateClick = this.checkInDateClick.bind(this)
   }
 
   getHouseData () {
@@ -48,11 +49,15 @@ class App extends React.Component {
     this.setState({
       calendarClicked: true
     })
+    //Query rates of new date 
   }
 
 //unfinished
   checkInDateClick (date) {
-    console.log('clicked')
+    console.log(this);
+    this.setState({
+      check_in: dateFns.format(date, "YYYY-MM-D")
+    })
   }
 
   render() {

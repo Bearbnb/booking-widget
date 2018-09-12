@@ -48,6 +48,12 @@ class Calendar extends React.Component {
     return <tbody className="dateHeader">{daysList}</tbody>
   }
 
+  // clickEvents() {
+  //   // () => this.onDateClick(dateFns.parse(cloneDay));
+  //   this.onDateClick(dateFns.parse(cloneDay));
+  //   this.props.checkInDateClick();
+  // }
+
   renderCells() {
     const currentMonth = this.state.currentMonth;
     const selectedDate = this.state.selectedDate;
@@ -66,7 +72,7 @@ class Calendar extends React.Component {
         formattedDate = dateFns.format(day, 'D');
         const cloneDay = day;
         days.push(
-          <td onClick={() => this.onDateClick(dateFns.parse(cloneDay))} key={day[i]}>
+          <td onClick={() => {this.onDateClick(dateFns.parse(cloneDay)); this.props.checkInDateClick(this.state.selectedDate);}} key={day[i]}>
             <span>{formattedDate}</span>
           </td>
         );
