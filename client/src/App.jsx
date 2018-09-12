@@ -17,7 +17,8 @@ class App extends React.Component {
       rates: '',
       averageRating: '',
       ratings: '',
-      calendarClicked: false
+      calendarClicked: false,
+      checkInSelected: false,
     }
     this.checkInClick = this.checkInClick.bind(this)
     this.checkInDateClick = this.checkInDateClick.bind(this)
@@ -28,15 +29,42 @@ class App extends React.Component {
       method: 'GET',
       url: '/houses/1',
       success: (results) => {
-        console.log('GET request called!')
-        console.log(results)
+        console.log('GET request called!');
+        console.log(results);
         this.setState({
           averageRating: results[0].average_rating,
           ratings: results[0].ratings
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+    // $.ajax({ //Get calendar info
+    //   method: 'GET',
+    //   url: '/houses/1/calendar',
+    //   success: (results) => {
+    //     console.log('GET getCalendarData request called!');
+    //     console.log(results);
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   }
+    // })
+  }
+
+  getCalendarData () {
+    $.ajax({
+      method: 'GET',
+      url: `/houses/1/check_in/${this.state.check_in}`,
+      success: (results) => {
+        console.log('GET getCalendarData request called!');
+        this.setState({
+          rates: results[0].price
         })
       },
       error: (error) => {
-        console.log(error)
+        console.log(error);
       }
     })
   }
@@ -49,14 +77,23 @@ class App extends React.Component {
     this.setState({
       calendarClicked: true
     })
-    //Query rates of new date
   }
 
-//unfinished
   checkInDateClick (date) {
-    this.setState({
-      check_in: dateFns.format(date, "YYYY-MM-D")
+
+    let checkInDateClickP = new Promise((resolve, reject) => {
+      resolve(date)
     })
+      .then((date) => {
+        console.log(date);
+        this.setState({
+          check_in: dateFns.format(date, "YYYY-MM-D")
+        })
+      })
+      .then(() => {
+        console.log('invoked!');
+        this.getCalendarData();
+      })
   }
 
   render() {
@@ -64,10 +101,13 @@ class App extends React.Component {
     if (this.state.calendarClicked === false) {
       return (
         <div>
+          <h3>
+            $-
+          </h3>
           <div>
             Dates
           </div>
-          <input className="check_in" onClick={this.checkInClick} placeholder="Check out" />
+          <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
           <span>
             ->
           </span>
@@ -83,10 +123,13 @@ class App extends React.Component {
     if (this.state.calendarClicked === true) {
       return (
         <div>
+          <h3 className="rates">
+            ${this.state.rates}
+          </h3>
           <div>
             Dates
           </div>
-          <input className="check_in" onClick={this.checkInClick} placeholder="Check out" />
+          <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
           <span>
             ->
           </span>
