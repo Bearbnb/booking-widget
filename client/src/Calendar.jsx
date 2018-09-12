@@ -33,6 +33,7 @@ class Calendar extends React.Component {
     )
   }
 
+
   renderDays() {
     const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     const daysList = [];

@@ -52,9 +52,7 @@ class App extends React.Component {
 
 //unfinished
   checkInDateClick (date) {
-    this.setState({
-      check_in: date
-    })
+    console.log('clicked')
   }
 
   render() {
@@ -65,11 +63,14 @@ class App extends React.Component {
           <div>
             Dates
           </div>
-          <input className="check_in" onClick={this.checkInClick} />
+          <input className="check_in" onClick={this.checkInClick} placeholder="Check out" />
           <span>
             ->
           </span>
-          <input className="check_out"/>
+          <input className="check_out" placeholder="Check out"/>
+          <br />
+          <input className="guests" placeholder="1 guest"/>
+          <br />
           <input type="submit" value="Book"/>
         </div>
       )
@@ -81,12 +82,13 @@ class App extends React.Component {
           <div>
             Dates
           </div>
-          <input className="check_in" onClick={this.checkInClick} />
+          <input className="check_in" onClick={this.checkInClick} placeholder="Check out" />
           <span>
             ->
           </span>
-          <input className="check_out"/>
-          <Calendar />
+          <input className="check_out" placeholder="Check out" />
+          <Calendar checkInDateClick={this.checkInDateClick}/>
+          <input className="guests" placeholder="1 guest"/>
           <input type="submit" value="Book"/>
         </div>
       )
