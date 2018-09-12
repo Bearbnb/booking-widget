@@ -1,19 +1,25 @@
 import React from 'react'
 import Calendar from './Calendar.jsx'
 import $ from "jquery";
+import dateFns from 'date-fns';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      check_in: '',
+      check_in: dateFns.format(new Date(), "YYYY-MM-D"),
       check_out: '',
       adults: '',
       children: '',
       infants: '',
       totalGuests: '',
       rates: '',
+      averageRating: '',
+      ratings: '',
+      calendarClicked: false
     }
+    this.checkInClick = this.checkInClick.bind(this)
   }
 
   getHouseData () {
@@ -23,6 +29,10 @@ class App extends React.Component {
       success: (results) => {
         console.log('GET request called!')
         console.log(results)
+        this.setState({
+          averageRating: results[0].average_rating,
+          ratings: results[0].ratings
+        })
       },
       error: (error) => {
         console.log(error)
@@ -34,13 +44,53 @@ class App extends React.Component {
     this.getHouseData();
   }
 
+  checkInClick () {
+    this.setState({
+      calendarClicked: true
+    })
+  }
+
+//unfinished
+  checkInDateClick (date) {
+    this.setState({
+      check_in: date
+    })
+  }
+
   render() {
-    return (
-      <div>
-        <Calendar />
-        <input type="submit" value="Book"/>
-      </div>
-    )
+
+    if (this.state.calendarClicked === false) {
+      return (
+        <div>
+          <div>
+            Dates
+          </div>
+          <input className="check_in" onClick={this.checkInClick} />
+          <span>
+            ->
+          </span>
+          <input className="check_out"/>
+          <input type="submit" value="Book"/>
+        </div>
+      )
+    }
+
+    if (this.state.calendarClicked === true) {
+      return (
+        <div>
+          <div>
+            Dates
+          </div>
+          <input className="check_in" onClick={this.checkInClick} />
+          <span>
+            ->
+          </span>
+          <input className="check_out"/>
+          <Calendar />
+          <input type="submit" value="Book"/>
+        </div>
+      )
+    }
   }
 }
 
