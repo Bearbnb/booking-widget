@@ -8,9 +8,9 @@ describe('App component', () => {
     expect(wrapper).toHaveLength(1)
   })
 
-  it('renders one <Calendar /> components', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find('Calendar')).toHaveLength(1);
-  });
+  // it('renders one <Calendar /> components', () => {
+  //   const wrapper = shallow(<App />);
+  //   expect(wrapper.find('Calendar')).toHaveLength(1);
+  // });
 
 })
