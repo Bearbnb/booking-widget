@@ -79,49 +79,30 @@ class App extends React.Component {
 
   render() {
 
-    if (this.state.calendarClicked === false) {
-      return (
-        <div>
-          <h3>
-            $-
-          </h3>
-          <div>
-            Dates
-          </div>
-          <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
-          <span>
-            ->
-          </span>
-          <input className="check_out" placeholder="Check out"/>
-          <br />
-          <input className="guests" placeholder="1 guest"/>
-          <br />
-          <input type="submit" value="Book"/>
-        </div>
-      )
-    }
+  let { calendarClicked } = this.state;
 
-    if (this.state.calendarClicked === true) {
-      return (
+    return (
+      <div>
+        <h3 className="rates">
+          ${this.state.rates}
+        </h3>
         <div>
-          <h3 className="rates">
-            ${this.state.rates}
-          </h3>
-          <div>
-            Dates
-          </div>
-          <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
-          <span>
-            ->
-          </span>
-          <input className="check_out" placeholder="Check out" />
-          <Calendar checkInDateClick={this.checkInDateClick}/>
-          <input className="guests" placeholder="1 guest"/>
-          <input type="submit" value="Book"/>
+          Dates
         </div>
-      )
-    }
+        <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
+        <span>
+          ->
+        </span>
+        <input className="check_out" placeholder="Check out" />
+        {calendarClicked &&
+          <Calendar checkInDateClick={this.checkInDateClick}/>
+        }
+        <br />
+        <input className="guests" placeholder="1 guest"/>
+        <br />
+        <input type="submit" value="Book"/>
+      </div>
+    )
   }
 }
-
 export default App;
