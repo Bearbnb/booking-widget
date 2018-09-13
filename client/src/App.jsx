@@ -9,14 +9,14 @@ class App extends React.Component {
     super(props);
     this.state = {
       check_in: dateFns.format(new Date(), "YYYY-MM-D"),
-      check_out: '',
-      adults: '',
-      children: '',
-      infants: '',
-      totalGuests: '',
-      rates: '',
-      averageRating: '',
-      ratings: '',
+      check_out: null,
+      adults: 1,
+      children: 0,
+      infants: 0,
+      totalGuests: 1,
+      rates: 0,
+      averageRating: 0,
+      ratings: 0,
       calendarClicked: false,
       checkInSelected: false,
     }
@@ -29,8 +29,6 @@ class App extends React.Component {
       method: 'GET',
       url: '/houses/1',
       success: (results) => {
-        console.log('GET request called!');
-        console.log(results);
         this.setState({
           averageRating: results[0].average_rating,
           ratings: results[0].ratings
@@ -40,17 +38,6 @@ class App extends React.Component {
         console.log(error);
       }
     })
-    // $.ajax({ //Get calendar info
-    //   method: 'GET',
-    //   url: '/houses/1/calendar',
-    //   success: (results) => {
-    //     console.log('GET getCalendarData request called!');
-    //     console.log(results);
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // })
   }
 
   getCalendarData () {
@@ -58,7 +45,6 @@ class App extends React.Component {
       method: 'GET',
       url: `/houses/1/check_in/${this.state.check_in}`,
       success: (results) => {
-        console.log('GET getCalendarData request called!');
         this.setState({
           rates: results[0].price
         })
@@ -80,20 +66,15 @@ class App extends React.Component {
   }
 
   checkInDateClick (date) {
-
-    let checkInDateClickP = new Promise((resolve, reject) => {
-      resolve(date)
-    })
-      .then((date) => {
-        console.log(date);
-        this.setState({
-          check_in: dateFns.format(date, "YYYY-MM-D")
-        })
-      })
-      .then(() => {
-        console.log('invoked!');
+    this.setState({
+      check_in: dateFns.format(date, "YYYY-MM-D")
+    }, (error, results) => {
+      if (error) {
+        console.log(`ERROR checkInDateClick failed`, error)
+      } else {
         this.getCalendarData();
-      })
+      }
+    })
   }
 
   render() {

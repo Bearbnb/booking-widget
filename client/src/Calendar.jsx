@@ -48,20 +48,19 @@ class Calendar extends React.Component {
   }
 
   clickEvents(cloneDay) {
-    let clickEventsP = new Promise((resolve, reject) => {
-      resolve(cloneDay)
-    })
-      .then((date) => {
-      this.onDateClick(dateFns.parse(date));
-    })
-      .then(() => {
-      this.props.checkInDateClick(this.state.selectedDate);
+    this.onDateClick(dateFns.parse(cloneDay), (error) => {
+      if (error) {
+        console.log(`ERROR clickEvents`, error)
+      } else {
+        this.props.checkInDateClick(this.state.selectedDate)
+      }
     })
   }
 
+
+
   renderCells() {
-    const currentMonth = this.state.currentMonth;
-    const selectedDate = this.state.selectedDate;
+    const { currentMonth, selectedDate} = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(currentMonth);
     const startDate = dateFns.startOfWeek(monthStart);
@@ -93,9 +92,15 @@ class Calendar extends React.Component {
     return <tbody className="body">{rows}</tbody>;
   }
 
-  onDateClick (date) {
+  onDateClick (date, callback) {
     this.setState({
       selectedDate: date
+    }, (error, results) => {
+      if (error) {
+        console.log(error)
+      } else {
+        callback(results)
+      }
     });
   }
 
