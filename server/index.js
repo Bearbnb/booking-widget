@@ -23,7 +23,8 @@ app.get('/houses/:id/calendar', (req, res) => {
 app.get('/houses/:id', (req, res) => {
   controller.findHouseData(req.params.id, (error, results) => {
     if (error) {
-      console.log(`ERROR findHouseData call failed`);
+      console.error(`ERROR findHouseData call failed`);
+      res.status(404);
     } else {
       console.log(`findHouseData call success!`);
       res.status(200);
@@ -35,7 +36,8 @@ app.get('/houses/:id', (req, res) => {
 app.get('/houses/:id/check_in/:date', (req, res) => {
   controller.findHousePrice({ booking_date: `${req.params.date}`, house_id: `${req.params.id}` }, (error, results) => {
     if (error) {
-      console.log(`ERROR findHousePrice call failed`)
+      console.error(`ERROR findHousePrice call failed`)
+      res.status(404);
     } else {
       console.log(`findHousePrice call success!`)
       res.status(200);
@@ -44,19 +46,11 @@ app.get('/houses/:id/check_in/:date', (req, res) => {
   })
 })
 
-// findHousePrice({ booking_date: "2018-12-31", house_id: 99 }, (error, results) => {
-//   if (error) {
-//     console.log(`ERROR findHousePrice call failed`)
-//   } else {
-//     console.log(`findHousePrice call success!`)
-//   }
-// })
-
-
 app.post('/rooms/houses/:id/check_in/date/check_out/date/guests/#', (req, res) => {
   controller.insertBookingData(req.body, (error, results) => {
     if (error) {
-      console.log(`ERROR insertBookingData call failed`);
+      console.error(`ERROR insertBookingData call failed`);
+      res.status(400);
     } else {
       console.log(`insertBookingData call success!`);
       res.status(201);
