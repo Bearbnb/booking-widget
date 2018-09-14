@@ -1,9 +1,162 @@
 import React from 'react';
 import $ from 'jquery';
 import dateFns from 'date-fns';
+import styled, { css } from 'styled-components';
 import Calendar from './Calendar.jsx';
 import Guests from './Guests.jsx';
 import Ratings from './Ratings.jsx';
+
+const Rate = styled.span`
+  word-wrap: break-word !important;
+  font-size: 18px !important;
+  box-sizing: border-box;
+  line-height: 26px !important;
+  letter-spacing: normal !important;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;
+  color: rgb(72, 72, 72) !important;
+  font-weight: 800 !important;
+  display: inline !important;
+  margin: 0px !important;
+`;
+
+const RatePerNight = styled.span`
+  font-weight: 600 !important;
+  margin: 0px !important;
+  word-wrap: break-word !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: normal !important;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  text-transform: undefined !important;
+  color: #484848 !important;
+  padding-top: undefined !important;
+  padding-bottom: undefined !important;
+  display: inline !important;
+`;
+
+const RatingNum = styled.span`
+  font-weight: 600 !important;
+  margin: 0px !important;
+  word-wrap: break-word !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: normal !important;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  text-transform: undefined !important;
+  color: #484848 !important;
+  padding-top: undefined !important;
+  padding-bottom: undefined !important;
+  display: inline !important;
+`;
+
+const Dates = styled.div`
+  font-weight: 600 !important;
+  margin: 0px !important;
+  word-wrap: break-word !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: normal !important;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  text-transform: undefined !important;
+  color: #484848 !important;
+  padding-top: undefined !important;
+  padding-bottom: undefined !important;
+`;
+
+const BookingComp = styled.div`
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  margin: 0px !important;
+  border: 1px solid #e4e4e4 !important;
+  background-color: #ffffff !important;
+  position: fixed;
+  top: 75px;
+`
+
+const BookingMargin = styled.div`
+  margin-top: 16px;
+  margin-bottom: 24px;
+`
+const RateBorderBottom = styled.div`
+  border-bottom: 1px solid #EBEBEB !important;
+`
+
+const MarginRates = styled.div`
+  margin-top: 16px;
+  margin-bottom: 16px;
+`
+
+const MarginDates = styled.div`
+  margin-top: 16px;
+  margin-bottom: 8px;
+`
+
+const MarginDateText = styled.div`
+  font-size: 17px !important;
+  font-weight: 200 !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  padding-bottom: 4px !important;
+`
+
+const DateInput = styled.div`
+  background-color: #fff !important;
+  display: block !important;
+  border: 1px solid #EBEBEB !important;
+  border-radius: 2px !important;
+  width: 100% !important;
+`
+
+const CheckInMargin = styled.div`
+  font-weight: normal !important;
+  font-size: 17px !important;
+  line-height: 22px !important;
+  color: #757575 !important;
+  margin: 0px !important;
+  padding: 8px !important;
+  background: #fff !important;
+  position: relative !important;
+  display: inline-block !important;
+  width: -webkit-calc(50% - 12px) !important;
+  width: -moz-calc(50% - 12px) !important;
+  width: calc(50% - 12px) !important;
+  vertical-align: middle !important;
+`
+
+const CheckInInput = styled.input`
+  position: absolute !important;
+  top: 0px !important;
+  left: 0px !important;
+  border: 0px !important;
+  height: 100% !important;
+  width: 100% !important;
+  display: block;
+  padding: 8px 10px;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #484848;
+`
+
+const ArrowMargin = styled.span`
+  display: inline-block !important;
+  vertical-align: middle !important;
+`
+
+const CheckOutMargin = styled.div`
+  font-weight: normal !important;
+  font-size: 17px !important;
+  line-height: 22px !important;
+  color: #757575 !important;
+  margin: 0px !important;
+  padding: 8px !important;
+  background: #fff !important;
+  position: relative !important;
+  display: inline-block !important;
+  width: -webkit-calc(50% - 12px) !important;
+  width: -moz-calc(50% - 12px) !important;
+  width: calc(50% - 12px) !important;
+  vertical-align: middle !important;
+`
 
 
 class App extends React.Component {
@@ -168,6 +321,7 @@ class App extends React.Component {
     }
   }
 
+
   render() {
     const {
       rates, calendarClicked, guestButtonClicked, adults, children, infants, averageRating, ratings, checkIn, checkOut, cleaningFee, serviceFee
@@ -177,62 +331,88 @@ class App extends React.Component {
     const daysDifference = dateFns.differenceInCalendarDays(checkOut, checkIn);
 
     return (
-      <div>
-        <div className="rates">
-          ${rates} per night
-        </div>
-        <Ratings averageRating={averageRating} />
-        <span>
-          {ratings}
-        </span>
-        <div>
-          Dates
-        </div>
-        {checkIn === null ? (
-          <input className="check-in" onClick={this.checkInClick} placeholder="Check in" />
-        ) : (
-          <input className="check-in" onClick={this.checkInClick} value={checkInPlaceholder} />
-        )}
-        <span>
-          <i class="fas fa-arrow-right"></i>
-        </span>
+      <BookingComp>
+        <BookingMargin>
+          <div>
+            <div>
+              <Rate>
+                $
+                {rates}
+              </Rate>
+              <RatePerNight>
+                per night
+              </RatePerNight>
+            </div>
+            <div>
+              <Ratings averageRating={averageRating} />
+              <RatingNum>
+                {ratings}
+              </RatingNum>
+            </div>
+            <MarginRates>
+              <RateBorderBottom />
+            </MarginRates>
+          </div>
+          <div>
+            <MarginDateText>
+              <Dates>
+                Dates
+              </Dates>
+            </MarginDateText>
+            <DateInput>
+              {checkIn === null ? (
+                <CheckInMargin>
+                  <CheckInInput placeholder="Check in" onClick={this.checkInClick}>
+                  </CheckInInput>
+                </CheckInMargin>
+              ) : (
+                <CheckInMargin>
+                  <CheckInInput className="check-in" onClick={this.checkInClick} value={checkInPlaceholder} />
+                </CheckInMargin>
+              )}
+              <ArrowMargin>
+                <i className="fas fa-arrow-right"></i>
+              </ArrowMargin>
+              <CheckOutMargin>
+                {checkOut === null ? (
+                  <input className="check-out" onClick={this.checkOutClick} placeholder="Check out" />
+                ) : (
+                  <input className="check-out" onClick={this.checkOutClick} value={checkOutPlaceholder} />
+                )}
+                {calendarClicked &&
+                  <Calendar checkInDateClick={this.checkInDateClick} />
+                }
+              </CheckOutMargin>
+            </DateInput>
+          </div>
+          <br />
+          {guestButtonClicked ? (
+            <Guests
+              guestButtonClick={this.guestButtonClick}
+              adults={adults}
+              children={children}
+              infants={infants}
+              adultAddClick={this.adultAddClick}
+              adultSubClick={this.adultSubClick}
+              childrenAddClick={this.childrenAddClick}
+              childrenSubClick={this.childrenSubClick}
+              infantAddClick={this.infantAddClick}
+              infantSubClick={this.infantSubClick}
+              />
+          ) : (
+            <button onClick={this.guestButtonClick}> Select guests </button>
+          )}
 
-        {checkOut === null ? (
-          <input className="check-out" onClick={this.checkOutClick} placeholder="Check out" />
-        ) : (
-          <input className="check-out" onClick={this.checkOutClick} value={checkOutPlaceholder} />
-        )}
-        {calendarClicked &&
-          <Calendar checkInDateClick={this.checkInDateClick} />
-        }
-        <br />
-        {guestButtonClicked ? (
-          <Guests
-            guestButtonClick={this.guestButtonClick}
-            adults={adults}
-            children={children}
-            infants={infants}
-            adultAddClick={this.adultAddClick}
-            adultSubClick={this.adultSubClick}
-            childrenAddClick={this.childrenAddClick}
-            childrenSubClick={this.childrenSubClick}
-            infantAddClick={this.infantAddClick}
-            infantSubClick={this.infantSubClick}
-          />
-        ) : (
-          <button onClick={this.guestButtonClick}> Select guests </button>
-        )}
-
-        {checkOut &&
-          (
-            <div className="total">
-              <div className="rates">
-                <span>${rates} x {daysDifference} nights</span>
-                <span> ${rates * daysDifference}</span>
-              </div>
-              <div className="cleaningFee">
-                <span>
-                  Cleaning fee <i class="far fa-question-circle"></i>
+          {checkOut &&
+            (
+              <div className="total">
+                <div className="rates">
+                  <span>${rates} x {daysDifference} nights</span>
+                  <span> ${rates * daysDifference}</span>
+                </div>
+                <div className="cleaningFee">
+                  <span>
+                    Cleaning fee <i class="far fa-question-circle"></i>
                 </span>
                 <span>
                   ${cleaningFee}
@@ -241,18 +421,20 @@ class App extends React.Component {
               <div className="serviceFee">
                 <span>
                   Service fee <i class="far fa-question-circle"></i>
-                </span>
-                <span>
-                  ${serviceFee}
-                </span>
-              </div>
+              </span>
+              <span>
+                ${serviceFee}
+              </span>
             </div>
-          )
-        }
+          </div>
+        )
+      }
 
-        <br />
-        <input type="submit" value="Book" />
-      </div>
+      <br />
+      <input type="submit" value="Book" />
+
+      </BookingMargin>
+      </BookingComp>
     );
   }
 }
