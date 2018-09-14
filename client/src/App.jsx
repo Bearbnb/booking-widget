@@ -1,15 +1,16 @@
-import React from 'react'
-import Calendar from './Calendar.jsx'
-import $ from "jquery";
+import React from 'react';
+import $ from 'jquery';
 import dateFns from 'date-fns';
+import Calendar from './Calendar.jsx';
+import Guests from './Guests.jsx';
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      check_in: dateFns.format(new Date(), "YYYY-MM-D"),
-      check_out: null,
+      checkIn: dateFns.format(new Date(), 'YYYY-MM-D'),
+      checkOut: null,
       adults: 1,
       children: 0,
       infants: 0,
@@ -19,12 +20,40 @@ class App extends React.Component {
       ratings: 0,
       calendarClicked: false,
       checkInSelected: false,
+      guestButtonClicked: false
     }
-    this.checkInClick = this.checkInClick.bind(this)
-    this.checkInDateClick = this.checkInDateClick.bind(this)
+    this.checkInClick = this.checkInClick.bind(this);
+    this.checkInDateClick = this.checkInDateClick.bind(this);
+    this.guestButtonClick = this.guestButtonClick.bind(this);
+    this.adultAddClick = this.adultAddClick.bind(this);
+    this.adultSubClick = this.adultSubClick.bind(this);
+    this.childrenAddClick = this.childrenAddClick.bind(this);
+    this.childrenSubClick = this.childrenSubClick.bind(this);
+    this.infantAddClick = this.infantAddClick.bind(this);
+    this.infantSubClick = this.infantSubClick.bind(this);
   }
 
-  getHouseData () {
+  componentDidMount() {
+    this.getHouseData();
+  }
+
+  getCalendarData() {
+    const { checkIn } = this.state;
+    $.ajax({
+      method: 'GET',
+      url: `/houses/1/check_in/${checkIn}`,
+      success: (results) => {
+        this.setState({
+          rates: results[0].price,
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  getHouseData() {
     $.ajax({
       method: 'GET',
       url: '/houses/1',
@@ -36,73 +65,120 @@ class App extends React.Component {
       },
       error: (error) => {
         console.log(error);
-      }
-    })
-  }
-
-  getCalendarData () {
-    $.ajax({
-      method: 'GET',
-      url: `/houses/1/check_in/${this.state.check_in}`,
-      success: (results) => {
-        this.setState({
-          rates: results[0].price
-        })
       },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+    });
   }
 
-  componentDidMount () {
-    this.getHouseData();
-  }
-
-  checkInClick () {
+  checkInClick() {
     this.setState({
-      calendarClicked: true
-    })
+      calendarClicked: true,
+    });
   }
 
-  checkInDateClick (date) {
+  guestButtonClick() {
+    const { guestButtonClicked } = this.state;
     this.setState({
-      check_in: dateFns.format(date, "YYYY-MM-D")
-    }, (error, results) => {
+      guestButtonClicked: !guestButtonClicked,
+    });
+  }
+
+  checkInDateClick(date) {
+    this.setState({
+      checkIn: dateFns.format(date, 'YYYY-MM-D'),
+    }, (error) => {
       if (error) {
-        console.log(`ERROR checkInDateClick failed`, error)
-      } else {
+        console.error(`ERROR checkInDateClick failed`, error)
+      } else {'ERROR checkInDateClick failed'
         this.getCalendarData();
       }
-    })
+    });
+  }
+
+  adultAddClick() {
+    const { adults } = this.state;
+    this.setState({
+      adults: adults + 1,
+    });
+  }
+
+  adultSubClick() {
+    const { adults } = this.state;
+    this.setState({
+      adults: adults - 1,
+    });
+  }
+
+  childrenAddClick() {
+    const { children } = this.state;
+    this.setState({
+      children: children + 1,
+    });
+  }
+
+  childrenSubClick() {
+    const { children } = this.state;
+    this.setState({
+      children: children - 1,
+    });
+  }
+
+  infantAddClick() {
+    const { infants } = this.state;
+    this.setState({
+      infants: infants + 1,
+    });
+  }
+
+  infantSubClick() {
+    const { infants } = this.state;
+    this.setState({
+      infants: infants - 1,
+    });
   }
 
   render() {
-
-  let { calendarClicked } = this.state;
+    const {
+      rates, calendarClicked, guestButtonClicked, adults, children, infants,
+    } = this.state;
 
     return (
       <div>
+        <i className="fas fa-star"></i>
         <h3 className="rates">
-          ${this.state.rates}
+          $
+          {rates}
         </h3>
         <div>
           Dates
         </div>
-        <input className="check_in" onClick={this.checkInClick} placeholder="Check in" />
+        <input className="check-in" onClick={this.checkInClick} placeholder="Check in" />
         <span>
           ->
         </span>
-        <input className="check_out" placeholder="Check out" />
+        <input className="check-out" placeholder="Check out" />
         {calendarClicked &&
           <Calendar checkInDateClick={this.checkInDateClick}/>
         }
         <br />
-        <input className="guests" placeholder="1 guest"/>
+        {guestButtonClicked ? (
+          <Guests guestButtonClick={this.guestButtonClick}
+            adults={adults}
+            children={children}
+            infants={infants}
+            adultAddClick={this.adultAddClick}
+            adultSubClick={this.adultSubClick}
+            childrenAddClick={this.childrenAddClick}
+            childrenSubClick={this.childrenSubClick}
+            infantAddClick={this.infantAddClick}
+            infantSubClick={this.infantSubClick}
+          />
+        ) : (
+          <button onClick={this.guestButtonClick}> Select guests </button>
+        )}
         <br />
-        <input type="submit" value="Book"/>
+        <input type="submit" value="Book" />
       </div>
-    )
+    );
   }
 }
 export default App;
