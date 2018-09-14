@@ -65,8 +65,7 @@ class Calendar extends React.Component {
           <input onClick={this.nextMonthClick} type="button" value=">" />
         </th>
       </tr>
-
-    )
+    );
   }
 
   renderDays() {

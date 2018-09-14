@@ -8,7 +8,7 @@ const houseData = [];
 
 for (let i = 0; i < 100; i++) {
   houseData.push([
-    Math.random() * 5, // average_rating
+    Math.floor(Math.random() * 5) + 1, // average_rating
     Math.random() * 250, // ratings
     Math.random() * 170, // cleaning_fee
     Math.random() * 120, // service_fee

@@ -3,26 +3,28 @@ import $ from 'jquery';
 import dateFns from 'date-fns';
 import Calendar from './Calendar.jsx';
 import Guests from './Guests.jsx';
+import Ratings from './Ratings.jsx';
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkIn: dateFns.format(new Date(), 'YYYY-MM-D'),
+      checkIn: null,
       checkOut: null,
       adults: 1,
       children: 0,
       infants: 0,
-      totalGuests: 1,
       rates: 0,
       averageRating: 0,
       ratings: 0,
       calendarClicked: false,
-      checkInSelected: false,
-      guestButtonClicked: false
+      guestButtonClicked: false,
+      cleaningFee: 0,
+      serviceFee: 0,
     }
     this.checkInClick = this.checkInClick.bind(this);
+    this.checkOutClick = this. checkOutClick.bind(this);
     this.checkInDateClick = this.checkInDateClick.bind(this);
     this.guestButtonClick = this.guestButtonClick.bind(this);
     this.adultAddClick = this.adultAddClick.bind(this);
@@ -41,7 +43,7 @@ class App extends React.Component {
     const { checkIn } = this.state;
     $.ajax({
       method: 'GET',
-      url: `/houses/1/check_in/${checkIn}`,
+      url: `/houses/5/check_in/${checkIn}`,
       success: (results) => {
         this.setState({
           rates: results[0].price,
@@ -56,11 +58,13 @@ class App extends React.Component {
   getHouseData() {
     $.ajax({
       method: 'GET',
-      url: '/houses/1',
+      url: '/houses/5',
       success: (results) => {
         this.setState({
           averageRating: results[0].average_rating,
-          ratings: results[0].ratings
+          ratings: results[0].ratings,
+          cleaningFee: results[0].cleaning_fee,
+          serviceFee: results[0].service_fee,
         });
       },
       error: (error) => {
@@ -75,6 +79,12 @@ class App extends React.Component {
     });
   }
 
+  checkOutClick() {
+    this.setState({
+      calendarClicked: true,
+    });
+  }
+
   guestButtonClick() {
     const { guestButtonClicked } = this.state;
     this.setState({
@@ -83,15 +93,30 @@ class App extends React.Component {
   }
 
   checkInDateClick(date) {
-    this.setState({
-      checkIn: dateFns.format(date, 'YYYY-MM-D'),
-    }, (error) => {
-      if (error) {
-        console.error(`ERROR checkInDateClick failed`, error)
-      } else {'ERROR checkInDateClick failed'
-        this.getCalendarData();
-      }
-    });
+    const { checkIn, checkOut, calendarClicked } = this.state;
+    if (checkIn === null || checkIn > dateFns.format(date, 'YYYY-MM-D')) {
+      this.setState({
+        checkIn: dateFns.format(date, 'YYYY-MM-D'),
+      }, (error) => {
+        if (error) {
+          console.error(`ERROR checkInDateClick failed`, error)
+        } else {
+          this.getCalendarData();
+        }
+      });
+    } else {
+      this.setState({
+        checkOut: dateFns.format(date, 'YYYY-MM-D'),
+        calendarClicked: !calendarClicked,
+      }, (error) => {
+        if (error) {
+          console.error(`ERROR checkInDateClick failed`, error)
+        } else {
+          this.getCalendarData();
+        }
+      });
+    }
+
   }
 
   adultAddClick() {
@@ -138,30 +163,45 @@ class App extends React.Component {
 
   render() {
     const {
-      rates, calendarClicked, guestButtonClicked, adults, children, infants,
+      rates, calendarClicked, guestButtonClicked, adults, children, infants, averageRating, ratings, checkIn, checkOut, cleaningFee, serviceFee
     } = this.state;
+    const checkInPlaceholder = `${dateFns.format(checkIn, 'MM/D/YYYY')}`
+    const checkOutPlaceholder = `${dateFns.format(checkOut, 'MM/D/YYYY')}`
+    const daysDifference = dateFns.differenceInCalendarDays(checkOut, checkIn);
 
     return (
       <div>
-        <i className="fas fa-star"></i>
-        <h3 className="rates">
-          $
-          {rates}
-        </h3>
+        <div className="rates">
+          ${rates} per night
+        </div>
+        <Ratings averageRating={averageRating} />
+        <span>
+          {ratings}
+        </span>
         <div>
           Dates
         </div>
-        <input className="check-in" onClick={this.checkInClick} placeholder="Check in" />
+        {checkIn === null ? (
+          <input className="check-in" onClick={this.checkInClick} placeholder="Check in" />
+        ) : (
+          <input className="check-in" onClick={this.checkInClick} value={checkInPlaceholder} />
+        )}
         <span>
-          ->
+          <i class="fas fa-arrow-right"></i>
         </span>
-        <input className="check-out" placeholder="Check out" />
+
+        {checkOut === null ? (
+          <input className="check-out" onClick={this.checkOutClick} placeholder="Check out" />
+        ) : (
+          <input className="check-out" onClick={this.checkOutClick} value={checkOutPlaceholder} />
+        )}
         {calendarClicked &&
-          <Calendar checkInDateClick={this.checkInDateClick}/>
+          <Calendar checkInDateClick={this.checkInDateClick} />
         }
         <br />
         {guestButtonClicked ? (
-          <Guests guestButtonClick={this.guestButtonClick}
+          <Guests
+            guestButtonClick={this.guestButtonClick}
             adults={adults}
             children={children}
             infants={infants}
@@ -175,6 +215,34 @@ class App extends React.Component {
         ) : (
           <button onClick={this.guestButtonClick}> Select guests </button>
         )}
+
+        {checkOut &&
+          (
+            <div className="total">
+              <div className="rates">
+                <span>${rates} x {daysDifference} nights</span>
+                <span> ${rates * daysDifference}</span>
+              </div>
+              <div className="cleaningFee">
+                <span>
+                  Cleaning fee <i class="far fa-question-circle"></i>
+                </span>
+                <span>
+                  ${cleaningFee}
+                </span>
+              </div>
+              <div className="serviceFee">
+                <span>
+                  Service fee <i class="far fa-question-circle"></i>
+                </span>
+                <span>
+                  ${serviceFee}
+                </span>
+              </div>
+            </div>
+          )
+        }
+
         <br />
         <input type="submit" value="Book" />
       </div>
