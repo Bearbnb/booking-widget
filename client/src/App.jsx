@@ -65,6 +65,7 @@ class App extends React.Component {
           ratings: results[0].ratings,
           cleaningFee: results[0].cleaning_fee,
           serviceFee: results[0].service_fee,
+          rates: results[0].average_rate,
         });
       },
       error: (error) => {
@@ -128,9 +129,11 @@ class App extends React.Component {
 
   adultSubClick() {
     const { adults } = this.state;
-    this.setState({
-      adults: adults - 1,
-    });
+    if (adults > 1) {
+      this.setState({
+        adults: adults - 1,
+      });
+    }
   }
 
   childrenAddClick() {
@@ -142,9 +145,11 @@ class App extends React.Component {
 
   childrenSubClick() {
     const { children } = this.state;
-    this.setState({
-      children: children - 1,
-    });
+    if (children > 0) {
+      this.setState({
+        children: children - 1,
+      });
+    }
   }
 
   infantAddClick() {
@@ -156,9 +161,11 @@ class App extends React.Component {
 
   infantSubClick() {
     const { infants } = this.state;
-    this.setState({
-      infants: infants - 1,
-    });
+    if (infants > 0) {
+      this.setState({
+        infants: infants - 1,
+      });
+    }
   }
 
   render() {
