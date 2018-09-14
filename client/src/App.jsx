@@ -95,9 +95,9 @@ class App extends React.Component {
 
   checkInDateClick(date) {
     const { checkIn, checkOut, calendarClicked } = this.state;
-    if (checkIn === null || checkIn > dateFns.format(date, 'YYYY-MM-D')) {
+    if (checkIn === null || checkIn > dateFns.format(date, 'YYYY-MM-DD')) {
       this.setState({
-        checkIn: dateFns.format(date, 'YYYY-MM-D'),
+        checkIn: dateFns.format(date, 'YYYY-MM-DD'),
       }, (error) => {
         if (error) {
           console.error(`ERROR checkInDateClick failed`, error)
@@ -107,7 +107,7 @@ class App extends React.Component {
       });
     } else {
       this.setState({
-        checkOut: dateFns.format(date, 'YYYY-MM-D'),
+        checkOut: dateFns.format(date, 'YYYY-MM-DD'),
         calendarClicked: !calendarClicked,
       }, (error) => {
         if (error) {
