@@ -8,15 +8,17 @@ const houseData = [];
 
 for (let i = 0; i < 100; i++) {
   houseData.push([
-    Math.random() * 5, // average_rating
+    Math.floor(Math.random() * 5) + 1, // average_rating
     Math.random() * 250, // ratings
     Math.random() * 170, // cleaning_fee
     Math.random() * 120, // service_fee
     Math.random() * 12, // occupancy
+    Math.random() * 560, // average_rate
+    Math.random() * 120, // taxes
   ]);
 }
 
-connection.query('INSERT INTO houses (average_rating, ratings, cleaning_fee, service_fee, occupancy) VALUES ?', [houseData], (error, results) => {
+connection.query('INSERT INTO houses (average_rating, ratings, cleaning_fee, service_fee, occupancy, average_rate, taxes) VALUES ?', [houseData], (error, results) => {
   if (error) {
     console.log('ERROR insert to db failed');
   } else {

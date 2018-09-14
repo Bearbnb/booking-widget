@@ -8,7 +8,9 @@ CREATE TABLE houses (
   ratings INT,
   cleaning_fee INT,
   service_fee INT,
-  occupancy INT
+  occupancy INT,
+  average_rate INT,
+  taxes INT
 );
 
 CREATE TABLE calendar (
@@ -28,10 +30,8 @@ CREATE TABLE booking (
   adults INT,
   children INT,
   infants INT,
-  total_occupancy INT,
   price INT,
   cleaning_fee INT,
   service_fee INT,
-  total_price INT,
   FOREIGN KEY (house_id) REFERENCES houses (house_id)
 );

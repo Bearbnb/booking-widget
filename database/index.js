@@ -57,8 +57,8 @@ const findHousePrice = (dateData, callback) => {
 
 const insertBookingData = (bookingData, callback) => {
 
-  connection.query(`INSERT INTO booking (house_id, check_in, check_out, adults, children, infants, total_occupancy, price, cleaning_fee, service_fee, total_price)
-    VALUES (${bookingData.house_id}, "${bookingData.check_in}", "${bookingData.check_out}", ${bookingData.adults}, ${bookingData.children}, ${bookingData.infants}, ${bookingData.total_occupancy}, ${bookingData.price}, ${bookingData.cleaning_fee}, ${bookingData.service_fee}, ${bookingData.total_price})`, (error, results) => {
+  connection.query(`INSERT INTO booking (house_id, check_in, check_out, adults, children, infants, price, cleaning_fee, service_fee)
+    VALUES (${bookingData.house_id}, "${bookingData.check_in}", "${bookingData.check_out}", ${bookingData.adults}, ${bookingData.children}, ${bookingData.infants}, ${bookingData.price}, ${bookingData.cleaning_fee}, ${bookingData.service_fee}})`, (error, results) => {
     if (error) {
       console.log('ERROR insertBookingData query failed', error);
       callback(error, null);
