@@ -6,7 +6,7 @@ import { injectGlobal } from 'styled-components'
 
 injectGlobal`
 body {
-  font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 }
 `
 
