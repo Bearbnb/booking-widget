@@ -36,6 +36,8 @@ const RatingNum = styled.span`
   color: #484848 !important;
   padding-left: 3px !important;
   display: inline !important;
+  position: relative;
+  top: 1px
 `;
 
 const Dates = styled.div`
@@ -67,11 +69,6 @@ const LineDivider = styled.div`
 const MarginRates = styled.div`
   margin-top: 16px;
   margin-bottom: 16px;
-`;
-
-const MarginDates = styled.div`
-  margin-top: 16px;
-  margin-bottom: 8px;
 `;
 
 const MarginDateText = styled.div`
@@ -140,7 +137,7 @@ const CalendarContainerOuter = styled.div`
   background-color: rgb(255, 255, 255) !important;
   position: absolute !important;
   top: 51px !important;
-  right: 172px !important;
+  right: 127px !important;
 `;
 
 const CalendarContainer = styled.div`
@@ -175,6 +172,7 @@ const GuestsButton = styled.button`
   display: block !important;
   width: 100% !important;
   border: 1px solid #EBEBEB !important;
+  margin-top: 4px;
 `;
 
 const GuestsButtonContainer = styled.div`
@@ -187,6 +185,7 @@ const GuestsButtonContainer = styled.div`
 const GuestsButtonLeftText = styled.div`
   font-size: 17px;
   justify-self: start;
+  color: #484848 !important;
 `;
 
 const GuestButtonRightText = styled.div`
@@ -325,6 +324,10 @@ const ChargedText = styled.small`
   color: #484848 !important;
 `;
 
+const testDiv = styled.div`
+  background-color: green;
+`;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -355,6 +358,7 @@ class App extends React.Component {
     this.infantAddClick = this.infantAddClick.bind(this);
     this.infantSubClick = this.infantSubClick.bind(this);
     this.bookingButtonClick = this.bookingButtonClick.bind(this);
+    this.hideCalendar = this.hideCalendar.bind(this);
   }
 
   componentDidMount() {
@@ -510,6 +514,12 @@ class App extends React.Component {
     }
   }
 
+  hideCalendar() {
+    this.setState({
+      calendarClicked: false,
+    });
+  }
+
   render() {
     const {
       rates, calendarClicked, guestButtonClicked, adults, children, infants, averageRating, ratings, checkIn, checkOut, cleaningFee, serviceFee, taxes,
@@ -569,7 +579,7 @@ class App extends React.Component {
                 {calendarClicked && (
                   <CalendarContainerOuter>
                     <CalendarContainer>
-                      <Calendar checkInDateClick={this.checkInDateClick} />
+                      <Calendar checkInDateClick={this.checkInDateClick} hideCalendar={this.hideCalendar} />
                     </CalendarContainer>
                   </CalendarContainerOuter>
                 )}
@@ -601,7 +611,7 @@ class App extends React.Component {
                       {adults + children } Guests
                     </GuestsButtonLeftText>
                     <GuestButtonRightText>
-                      <i class="fas fa-angle-down"></i>
+                      <i className="fas fa-angle-down"></i>
                     </GuestButtonRightText>
                 </GuestsButtonContainer>
                 ) : (
@@ -610,14 +620,13 @@ class App extends React.Component {
                       {adults + children} Guests, {infants} Infants
                     </GuestsButtonLeftText>
                     <GuestButtonRightText>
-                      <i class="fas fa-angle-down"></i>
+                      <i className="fas fa-angle-down"></i>
                     </GuestButtonRightText>
                 </GuestsButtonContainer>
                 )}
               </GuestsButton>
             )}
           </GuestsMargin>
-
           {checkOut &&
             (
               <TotalMargin>
@@ -629,13 +638,13 @@ class App extends React.Component {
                   <LineDivider />
                 </TotalDividerMargin>
                 <TotalSectionMargin>
-                    <TotalSectionLeftText>
-                      Cleaning fee <i class="far fa-question-circle" />
-                    </TotalSectionLeftText>
-                    <TotalSectionRightText>
-                      $
-                      {cleaningFee}
-                    </TotalSectionRightText>
+                  <TotalSectionLeftText>
+                    Cleaning fee <i class="far fa-question-circle" />
+                  </TotalSectionLeftText>
+                  <TotalSectionRightText>
+                    $
+                    {cleaningFee}
+                  </TotalSectionRightText>
                 </TotalSectionMargin>
                 <TotalDividerMargin>
                   <LineDivider />
@@ -673,9 +682,6 @@ class App extends React.Component {
                     {rates * daysDifference + cleaningFee + serviceFee + taxes}
                   </TotalSectionBottomRightText>
                 </TotalSectionMargin>
-                <TotalDividerMargin>
-                  <LineDivider />
-                </TotalDividerMargin>
               </TotalMargin>
             )
           }

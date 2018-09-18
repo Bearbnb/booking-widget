@@ -45,8 +45,8 @@ const GuestsContainer = styled.div`
 `;
 
 const GuestsSectionContainer = styled.div`
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 22px;
+  margin-bottom: 22px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -68,7 +68,7 @@ const GuestsSectionRight = styled.div`
   font-weight: 600 !important;
   margin: 0px !important;
   word-wrap: break-word !important;
-  font-size: 16px !important;
+  font-size: 17px !important;
   line-height: 22px !important;
   letter-spacing: normal !important;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
@@ -77,7 +77,7 @@ const GuestsSectionRight = styled.div`
 `;
 
 const GuestsDescription = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   word-wrap: break-word !important;
   font-size: 14px !important;
@@ -88,6 +88,7 @@ const GuestsDescription = styled.div`
 `;
 
 const GuestsCloseContainer = styled.div`
+  margin-bottom: 10px;
   display: grid;
   grid-template-columns: 1fr;
 `;
@@ -121,7 +122,7 @@ class Guests extends React.Component {
                 {adults + children } Guests
               </GuestsButtonLeftText>
               <GuestButtonRightText>
-                <i class="fas fa-angle-up"></i>
+                <i className="fas fa-angle-up"></i>
               </GuestButtonRightText>
             </GuestButtonMargin>
           ) : (
@@ -130,7 +131,7 @@ class Guests extends React.Component {
                 {adults + children} Guests, {infants} Infants
               </GuestsButtonLeftText>
               <GuestButtonRightText>
-                <i class="fas fa-angle-up"></i>
+                <i className="fas fa-angle-up"></i>
               </GuestButtonRightText>
             </GuestButtonMargin>
           )}

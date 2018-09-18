@@ -25,5 +25,4 @@ describe('Guests component', () => {
       wrapper.find('p').last().simulate('click')
       expect(props.guestButtonClick).toHaveBeenCalled();
   })
-
 })
