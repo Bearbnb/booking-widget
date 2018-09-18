@@ -33,5 +33,6 @@ CREATE TABLE booking (
   price INT,
   cleaning_fee INT,
   service_fee INT,
+  taxes INT,
   FOREIGN KEY (house_id) REFERENCES houses (house_id)
 );

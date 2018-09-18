@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import dateFns from 'date-fns';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Calendar from './Calendar.jsx';
 import Guests from './Guests.jsx';
 import Ratings from './Ratings.jsx';
@@ -23,7 +23,6 @@ const RatePerNight = styled.span`
   word-wrap: break-word !important;
   font-size: 12px !important;
   line-height: 16px !important;
-  letter-spacing: normal !important;
   color: #484848 !important;
   display: inline !important;
 `;
@@ -83,7 +82,7 @@ const MarginDateText = styled.div`
   padding-bottom: 4px !important;
 `;
 
-const DateInput = styled.div`
+const DateInputContainer = styled.div`
   background-color: #fff !important;
   display: block !important;
   border: 1px solid #EBEBEB !important;
@@ -94,11 +93,9 @@ const DateInput = styled.div`
 `;
 
 const CheckInMargin = styled.div`
-  font-weight: normal !important;
   font-size: 17px !important;
   line-height: 22px !important;
   color: #757575 !important;
-  margin: 0px !important;
   padding: 8px !important;
   background: #fff !important;
   position: relative !important;
@@ -111,17 +108,10 @@ const CheckInMargin = styled.div`
 `;
 
 const CheckInInput = styled.input`
-  position: absolute !important;
-  top: 0px !important;
-  left: 0px !important;
   border: 0px !important;
-  height: 100% !important;
-  width: 100% !important;
-  display: block;
-  padding: 8px 10px;
-  border-radius: 2px;
-  background-color: #fff;
-  color: #484848;
+  font-size: 17px !important;
+  line-height: 22px !important;
+  color: #757575 !important;
 `;
 
 const ArrowMargin = styled.span`
@@ -134,7 +124,6 @@ const CheckOutMargin = styled.div`
   font-size: 17px !important;
   line-height: 22px !important;
   color: #757575 !important;
-  margin: 0px !important;
   padding: 8px !important;
   background: #fff !important;
   position: relative !important;
@@ -143,18 +132,24 @@ const CheckOutMargin = styled.div`
   width: -moz-calc(50% - 12px) !important;
   width: calc(50% - 12px) !important;
   vertical-align: middle !important;
+  box-sizing: border-box;
 `;
 
-const CalendarContainer = styled.div`
+const CalendarContainerOuter = styled.div`
   z-index: 1 !important;
   background-color: rgb(255, 255, 255) !important;
   position: absolute !important;
   top: 51px !important;
-  left: 0px !important;
+  right: 172px !important;
+`;
+
+const CalendarContainer = styled.div`
+  position: relative !important;
   text-align: left !important;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 6px, rgba(0, 0, 0, 0.07) 0px 0px 0px 1px !important;
   background: rgb(255, 255, 255) !important;
   border-radius: 3px !important;
+  padding: 15px;
 `;
 
 const GuestsMargin = styled.div`
@@ -164,7 +159,6 @@ const GuestsMargin = styled.div`
 
 const GuestsText = styled.small`
   font-weight: 600 !important;
-  margin: 0px !important;
   word-wrap: break-word !important;
   font-size: 12px !important;
   line-height: 16px !important;
@@ -190,8 +184,6 @@ const GuestsButtonMargin = styled.div`
 
 const GuestsButtonText = styled.div`
   font-size: 17px;
-  margin: 0;
-  padding: 0;
 `;
 
 const BookingButtonMargin = styled.div`
@@ -226,7 +218,6 @@ const BookingButton = styled.button`
   padding-left: 24px !important;
   padding-right: 24px !important;
   min-width: 77.66563145999496px !important;
-  box-shadow: none !important;
   background: #FF5A5F !important;
   border-color: transparent !important;
   color: #ffffff !important;
@@ -330,6 +321,7 @@ class App extends React.Component {
     this.childrenSubClick = this.childrenSubClick.bind(this);
     this.infantAddClick = this.infantAddClick.bind(this);
     this.infantSubClick = this.infantSubClick.bind(this);
+    this.bookingButtonClick = this.bookingButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -340,7 +332,7 @@ class App extends React.Component {
     const { checkIn } = this.state;
     $.ajax({
       method: 'GET',
-      url: `/houses/5/check_in/${checkIn}`,
+      url: `/houses/1/check_in/${checkIn}`,
       success: (results) => {
         this.setState({
           rates: results[0].price,
@@ -355,7 +347,7 @@ class App extends React.Component {
   getHouseData() {
     $.ajax({
       method: 'GET',
-      url: '/houses/5',
+      url: '/houses/1',
       success: (results) => {
         this.setState({
           averageRating: results[0].average_rating,
@@ -370,6 +362,21 @@ class App extends React.Component {
         console.log(error);
       },
     });
+  }
+
+  postBookingData() {
+    $.ajax({
+      method: 'POST',
+      url: '/houses/5/check_in/' + dateFns.format(this.state.checkIn, 'YYYY-MM-DD') + '/check_out/' + dateFns.format(this.state.checkOut, 'YYYY-MM-DD'),
+      contentType: 'application/json',
+      data: JSON.stringify({house_id: 1, check_in: dateFns.format(this.state.checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(this.state.checkOut, 'YYYY-MM-DD'), adults: this.state.adults, children: this.state.children, infants: this.state.infants, price: this.state.rates, cleaning_fee: this.state.cleaningFee, service_fee: this.state.serviceFee, taxes: this.state.taxes}),
+      success: (results) => {
+        console.log(JSON.stringify(results))
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    })
   }
 
   checkInClick() {
@@ -389,6 +396,10 @@ class App extends React.Component {
     this.setState({
       guestButtonClicked: !guestButtonClicked,
     });
+  }
+
+  bookingButtonClick() {
+    this.postBookingData();
   }
 
   checkInDateClick(date) {
@@ -502,14 +513,14 @@ class App extends React.Component {
                 Dates
               </Dates>
             </MarginDateText>
-            <DateInput>
+            <DateInputContainer>
               {checkIn === null ? (
                 <CheckInMargin>
-                  <input placeholder="Check in" onClick={this.checkInClick} />
+                  <CheckInInput placeholder="Check in" onClick={this.checkInClick} />
                 </CheckInMargin>
               ) : (
                 <CheckInMargin>
-                  <input className="check-in" onClick={this.checkInClick} value={checkInPlaceholder} />
+                  <CheckInInput className="check-in" onClick={this.checkInClick} value={checkInPlaceholder} />
                 </CheckInMargin>
               )}
               <ArrowMargin>
@@ -517,15 +528,19 @@ class App extends React.Component {
               </ArrowMargin>
               <CheckOutMargin>
                 {checkOut === null ? (
-                  <input className="check-out" onClick={this.checkOutClick} placeholder="Check out" />
+                  <CheckInInput className="check-out" onClick={this.checkOutClick} placeholder="Check out" />
                 ) : (
-                  <input className="check-out" onClick={this.checkOutClick} value={checkOutPlaceholder} />
+                  <CheckInInput className="check-out" onClick={this.checkOutClick} value={checkOutPlaceholder} />
                 )}
-                {calendarClicked &&
-                  <Calendar checkInDateClick={this.checkInDateClick} />
-                }
+                {calendarClicked && (
+                  <CalendarContainerOuter>
+                    <CalendarContainer>
+                      <Calendar checkInDateClick={this.checkInDateClick} />
+                    </CalendarContainer>
+                  </CalendarContainerOuter>
+                )}
               </CheckOutMargin>
-            </DateInput>
+            </DateInputContainer>
           </div>
           <GuestsMargin>
             <GuestsText>
@@ -556,7 +571,6 @@ class App extends React.Component {
                       {adults + children} Guests, {infants} Infants
                     </GuestsButtonText>
                   )}
-
                 </GuestsButtonMargin>
               </GuestsButton>
             )}
@@ -626,7 +640,7 @@ class App extends React.Component {
           <BookingButtonMargin>
             <BookingButton>
               <BookingButtonInner>
-                <BookingButtonText>
+                <BookingButtonText onClick={this.bookingButtonClick}>
                   Request to Book
                 </BookingButtonText>
               </BookingButtonInner>

@@ -46,10 +46,10 @@ app.get('/houses/:id/check_in/:date', (req, res) => {
   })
 })
 
-app.post('/rooms/houses/:id/check_in/date/check_out/date/guests/#', (req, res) => {
+app.post('/houses/:id/check_in/:date/check_out/:date', (req, res) => {
   controller.insertBookingData(req.body, (error, results) => {
     if (error) {
-      console.error(`ERROR insertBookingData call failed`);
+      console.log(`ERROR insertBookingData call failed`);
       res.status(400);
     } else {
       console.log(`insertBookingData call success!`);

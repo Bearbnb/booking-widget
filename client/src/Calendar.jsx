@@ -1,5 +1,46 @@
 import React from 'react';
 import dateFns from 'date-fns';
+import styled from 'styled-components';
+
+const MonthHeader = styled.span`
+  color: rgb(72, 72, 72) !important;
+  font-size: 18px !important;
+  text-align: center !important;
+  padding-top: 22px !important;
+  padding-bottom: 37px !important;
+  caption-side: initial !important;
+  font-weight: bold;
+`;
+
+const DaysHeader = styled.td`
+  color: rgb(117, 117, 117) !important;
+  font-size: 0.85em;
+  left: 0px;
+  padding: 0px 5px;
+`;
+
+const DaysText = styled.span`
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;
+  font-weight: 600 !important;
+  height: 12px !important;
+  line-height: 12px !important;
+  text-align: center !important;
+  width: 38px !important;
+  color: rgb(72, 72, 72) !important;
+  font-size: 14px !important;
+`;
+
+const MonthArrowContainer = styled.div`
+  cursor: pointer !important;
+  background-color: rgb(255, 255, 255) !important;
+  color: rgb(117, 117, 117) !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: rgb(228, 231, 231) !important;
+  border-radius: 3px !important;
+  padding: 6px !important;
+`;
+
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -22,7 +63,7 @@ class Calendar extends React.Component {
       } else {
           callback(results);
       }
-    });'MMMM YYYY'
+    });
   }
 
   nextMonthClick() {
@@ -54,15 +95,19 @@ class Calendar extends React.Component {
     return (
       <tr>
         <th className="header" colSpan="1" align="left">
-          <input onClick={this.prevMonthClick} type="button" value="<" />
+          <MonthArrowContainer>
+            <i class="fas fa-arrow-left" onClick={this.prevMonthClick} type="button"></i>
+          </MonthArrowContainer>
         </th>
         <th colSpan="5">
-          <span>
+          <MonthHeader>
             {dateFns.format(currentMonth, 'MMMM YYYY')}
-          </span>
+          </MonthHeader>
         </th>
         <th colSpan="1" align="right">
-          <input onClick={this.nextMonthClick} type="button" value=">" />
+          <MonthArrowContainer>
+            <i className="fas fa-arrow-right" onClick={this.nextMonthClick} type="button"></i>
+          </MonthArrowContainer>
         </th>
       </tr>
     );
@@ -74,9 +119,9 @@ class Calendar extends React.Component {
 
     for (let i = 0; i < days.length; i++) {
       daysList.push(
-        <td key={days[i]}>
+        <DaysHeader key={days[i]}>
           {days[i]}
-        </td>
+        </DaysHeader>
       );
     }
     return <tbody className="dateHeader">{daysList}</tbody>
@@ -100,9 +145,9 @@ class Calendar extends React.Component {
         const cloneDay = day;
         days.push(
           <td onClick={() => this.clickEvents(cloneDay)} key={day[i]}>
-            <span>
+            <DaysText>
               {formattedDate}
-            </span>
+            </DaysText>
           </td>,
         );
         day = dateFns.addDays(day, 1);
