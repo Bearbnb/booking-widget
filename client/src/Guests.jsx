@@ -15,12 +15,18 @@ const GuestsButton = styled.button`
 const GuestButtonMargin = styled.div`
   margin-left: 8px;
   margin-right: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
-const GuestsButtonText = styled.div`
+const GuestsButtonLeftText = styled.div`
   font-size: 17px;
-  margin: 0;
-  padding: 0;
+  justify-self: start;
+`;
+
+const GuestButtonRightText = styled.div`
+  font-size: 17px;
+  justify-self: end;
 `;
 
 const GuestsContainer = styled.div`
@@ -47,18 +53,26 @@ const GuestsSectionContainer = styled.div`
 `;
 
 const GuestsSectionLeft = styled.div`
-  font-size: 14px;
-  line-height: 1.43;
-  color: #484848;
-  background-color: #fff;
+  font-weight: 600 !important;
+  margin: 0px !important;
+  word-wrap: break-word !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  letter-spacing: normal !important;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  color: #484848 !important;
   justify-self: start;
 `;
 
 const GuestsSectionRight = styled.div`
-  font-size: 14px;
-  line-height: 1.43;
-  color: #484848;
-  background-color: #fff;
+  font-weight: 600 !important;
+  margin: 0px !important;
+  word-wrap: break-word !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  letter-spacing: normal !important;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  color: #484848 !important;
   justify-self: end;
 `;
 
@@ -101,17 +115,25 @@ class Guests extends React.Component {
     return (
       <div>
         <GuestsButton onClick={guestButtonClick}>
-          <GuestButtonMargin>
-            {infants < 1 ? (
-              <GuestsButtonText>
+          {infants < 1 ? (
+            <GuestButtonMargin>
+              <GuestsButtonLeftText>
                 {adults + children } Guests
-              </GuestsButtonText>
-            ) : (
-              <GuestsButtonText>
+              </GuestsButtonLeftText>
+              <GuestButtonRightText>
+                <i class="fas fa-angle-up"></i>
+              </GuestButtonRightText>
+            </GuestButtonMargin>
+          ) : (
+            <GuestButtonMargin>
+              <GuestsButtonLeftText>
                 {adults + children} Guests, {infants} Infants
-              </GuestsButtonText>
-            )}
-          </GuestButtonMargin>
+              </GuestsButtonLeftText>
+              <GuestButtonRightText>
+                <i class="fas fa-angle-up"></i>
+              </GuestButtonRightText>
+            </GuestButtonMargin>
+          )}
         </GuestsButton>
         <GuestsContainer>
           <GuestsSectionContainer>
@@ -119,7 +141,7 @@ class Guests extends React.Component {
               Adults
             </GuestsSectionLeft>
             <GuestsSectionRight>
-              <i onClick={adultAddClick} className="fas fa-plus-circle"></i> {adults} <i onClick={adultSubClick} className="fas fa-minus-circle"></i>
+              <i onClick={adultSubClick} className="fas fa-minus-circle"></i> {adults} <i onClick={adultAddClick} className="fas fa-plus-circle"></i>
             </GuestsSectionRight>
           </GuestsSectionContainer>
           <GuestsSectionContainer>
@@ -127,7 +149,7 @@ class Guests extends React.Component {
               Children
             </GuestsSectionLeft>
             <GuestsSectionRight>
-              <i onClick={childrenAddClick} className="fas fa-plus-circle"></i> {children} <i onClick={childrenSubClick} className="fas fa-minus-circle"></i>
+              <i onClick={childrenSubClick} className="fas fa-minus-circle"></i> {children} <i onClick={childrenAddClick} className="fas fa-plus-circle"></i>
             </GuestsSectionRight>
           </GuestsSectionContainer>
           <GuestsSectionContainer>
@@ -135,7 +157,7 @@ class Guests extends React.Component {
               Infants
             </GuestsSectionLeft>
             <GuestsSectionRight>
-              <i onClick={infantAddClick} className="fas fa-plus-circle"></i> {infants} <i onClick={infantSubClick} className="fas fa-minus-circle"></i>
+              <i onClick={infantSubClick} className="fas fa-minus-circle"></i> {infants} <i onClick={infantAddClick} className="fas fa-plus-circle"></i>
             </GuestsSectionRight>
           </GuestsSectionContainer>
           <GuestsDescription>

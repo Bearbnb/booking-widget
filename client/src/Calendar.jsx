@@ -2,7 +2,7 @@ import React from 'react';
 import dateFns from 'date-fns';
 import styled from 'styled-components';
 
-const MonthHeader = styled.span`
+const MonthHeader = styled.th`
   color: rgb(72, 72, 72) !important;
   font-size: 18px !important;
   text-align: center !important;
@@ -99,11 +99,9 @@ class Calendar extends React.Component {
             <i class="fas fa-arrow-left" onClick={this.prevMonthClick} type="button"></i>
           </MonthArrowContainer>
         </th>
-        <th colSpan="5">
-          <MonthHeader>
+        <MonthHeader colSpan="5">
             {dateFns.format(currentMonth, 'MMMM YYYY')}
-          </MonthHeader>
-        </th>
+        </MonthHeader>
         <th colSpan="1" align="right">
           <MonthArrowContainer>
             <i className="fas fa-arrow-right" onClick={this.nextMonthClick} type="button"></i>

@@ -177,13 +177,21 @@ const GuestsButton = styled.button`
   border: 1px solid #EBEBEB !important;
 `;
 
-const GuestsButtonMargin = styled.div`
+const GuestsButtonContainer = styled.div`
   margin-left: 8px;
   margin-right: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
-const GuestsButtonText = styled.div`
+const GuestsButtonLeftText = styled.div`
   font-size: 17px;
+  justify-self: start;
+`;
+
+const GuestButtonRightText = styled.div`
+  font-size: 17px;
+  justify-self: end;
 `;
 
 const BookingButtonMargin = styled.div`
@@ -281,17 +289,42 @@ const TotalDividerMargin = styled.div`
   margin-bottom: 8px;
 `;
 
-const TotalSectionBottomText = styled.div`
+const TotalSectionBottomLeftText = styled.div`
   font-weight: 600 !important;
   word-wrap: break-word !important;
   font-size: 14px !important;
   line-height: 18px !important;
   letter-spacing: normal !important;
   color: rgb(72, 72, 72) !important;
-  display: inline !important;
-  margin: 0px !important;
-  box-sizing: border-box;
+  justify-self: start;
 `;
+
+const TotalSectionBottomRightText = styled.div`
+  font-weight: 600 !important;
+  word-wrap: break-word !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  letter-spacing: normal !important;
+  color: rgb(72, 72, 72) !important;
+  margin: 0px !important;
+  justify-self: end;
+`;
+
+const ChargedTextContainer = styled.div`
+  margin-top: 8px;
+  box-sizing: border-box;
+  text-align: center !important;
+`;
+
+const ChargedText = styled.small`
+  font-weight: 500 !important;
+  word-wrap: break-word !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: normal !important;
+  color: #484848 !important;
+`;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -365,11 +398,12 @@ class App extends React.Component {
   }
 
   postBookingData() {
+    const { checkIn, checkOut, adults, children, infants, rates, cleaningFee, serviceFee, taxes } = this.state;
     $.ajax({
       method: 'POST',
-      url: '/houses/5/check_in/' + dateFns.format(this.state.checkIn, 'YYYY-MM-DD') + '/check_out/' + dateFns.format(this.state.checkOut, 'YYYY-MM-DD'),
+      url: `/houses/5/check_in/${dateFns.format(checkIn, 'YYYY-MM-DD')}/check_out/${dateFns.format(checkOut, 'YYYY-MM-DD')}`,
       contentType: 'application/json',
-      data: JSON.stringify({house_id: 1, check_in: dateFns.format(this.state.checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(this.state.checkOut, 'YYYY-MM-DD'), adults: this.state.adults, children: this.state.children, infants: this.state.infants, price: this.state.rates, cleaning_fee: this.state.cleaningFee, service_fee: this.state.serviceFee, taxes: this.state.taxes}),
+      data: JSON.stringify({ house_id: 1, check_in: dateFns.format(checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(checkOut, 'YYYY-MM-DD'), adults, children, infants, price: rates, cleaning_fee: cleaningFee, service_fee: serviceFee, taxes }),
       success: (results) => {
         console.log(JSON.stringify(results))
       },
@@ -389,17 +423,6 @@ class App extends React.Component {
     this.setState({
       calendarClicked: true,
     });
-  }
-
-  guestButtonClick() {
-    const { guestButtonClicked } = this.state;
-    this.setState({
-      guestButtonClicked: !guestButtonClicked,
-    });
-  }
-
-  bookingButtonClick() {
-    this.postBookingData();
   }
 
   checkInDateClick(date) {
@@ -426,6 +449,17 @@ class App extends React.Component {
         }
       });
     }
+  }
+
+  guestButtonClick() {
+    const { guestButtonClicked } = this.state;
+    this.setState({
+      guestButtonClicked: !guestButtonClicked,
+    });
+  }
+
+  bookingButtonClick() {
+    this.postBookingData();
   }
 
   adultAddClick() {
@@ -561,17 +595,25 @@ class App extends React.Component {
               />
             ) : (
               <GuestsButton onClick={this.guestButtonClick}>
-                <GuestsButtonMargin>
-                  {infants < 1 ? (
-                    <GuestsButtonText>
+                {infants < 1 ? (
+                  <GuestsButtonContainer>
+                    <GuestsButtonLeftText>
                       {adults + children } Guests
-                    </GuestsButtonText>
-                  ) : (
-                    <GuestsButtonText>
+                    </GuestsButtonLeftText>
+                    <GuestButtonRightText>
+                      <i class="fas fa-angle-down"></i>
+                    </GuestButtonRightText>
+                </GuestsButtonContainer>
+                ) : (
+                  <GuestsButtonContainer>
+                    <GuestsButtonLeftText>
                       {adults + children} Guests, {infants} Infants
-                    </GuestsButtonText>
-                  )}
-                </GuestsButtonMargin>
+                    </GuestsButtonLeftText>
+                    <GuestButtonRightText>
+                      <i class="fas fa-angle-down"></i>
+                    </GuestButtonRightText>
+                </GuestsButtonContainer>
+                )}
               </GuestsButton>
             )}
           </GuestsMargin>
@@ -611,25 +653,25 @@ class App extends React.Component {
                   <LineDivider />
                 </TotalDividerMargin>
                 <TotalSectionMargin>
-                    <TotalSectionLeftText>
-                      Occupancy taxes and fees <i class="far fa-question-circle" />
-                    </TotalSectionLeftText>
-                    <TotalSectionRightText>
-                      $
-                      {taxes}
-                    </TotalSectionRightText>
+                  <TotalSectionLeftText>
+                    Occupancy taxes and fees <i class="far fa-question-circle" />
+                  </TotalSectionLeftText>
+                  <TotalSectionRightText>
+                    $
+                    {taxes}
+                  </TotalSectionRightText>
                 </TotalSectionMargin>
                 <TotalDividerMargin>
                   <LineDivider />
                 </TotalDividerMargin>
                 <TotalSectionMargin>
-                  <TotalSectionBottomText>
+                  <TotalSectionBottomLeftText>
                     Total
-                  </TotalSectionBottomText>
-                    <TotalSectionRightText>
-                      $
-                      {rates * daysDifference + cleaningFee + serviceFee + taxes}
-                    </TotalSectionRightText>
+                  </TotalSectionBottomLeftText>
+                  <TotalSectionBottomRightText>
+                    $
+                    {rates * daysDifference + cleaningFee + serviceFee + taxes}
+                  </TotalSectionBottomRightText>
                 </TotalSectionMargin>
                 <TotalDividerMargin>
                   <LineDivider />
@@ -646,6 +688,11 @@ class App extends React.Component {
               </BookingButtonInner>
             </BookingButton>
           </BookingButtonMargin>
+          <ChargedTextContainer>
+            <ChargedText>
+              You won’t be charged yet
+            </ChargedText>
+          </ChargedTextContainer>
         </BookingMargin>
       </BookingComp>
     );
