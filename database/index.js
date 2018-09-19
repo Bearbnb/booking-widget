@@ -57,8 +57,8 @@ const findHousePrice = (dateData, callback) => {
 
 const insertBookingData = (bookingData, callback) => {
 
-  connection.query(`INSERT INTO booking (house_id, check_in, check_out, adults, children, infants, price, cleaning_fee, service_fee)
-    VALUES (${bookingData.house_id}, "${bookingData.check_in}", "${bookingData.check_out}", ${bookingData.adults}, ${bookingData.children}, ${bookingData.infants}, ${bookingData.price}, ${bookingData.cleaning_fee}, ${bookingData.service_fee}})`, (error, results) => {
+  connection.query(`INSERT INTO booking (house_id, check_in, check_out, adults, children, infants, price, cleaning_fee, service_fee, taxes)
+    VALUES (${bookingData.house_id}, "${bookingData.check_in}", "${bookingData.check_out}", ${bookingData.adults}, ${bookingData.children}, ${bookingData.infants}, ${bookingData.price}, ${bookingData.cleaning_fee}, ${bookingData.service_fee}, ${bookingData.taxes})`, (error, results) => {
     if (error) {
       console.log('ERROR insertBookingData query failed', error);
       callback(error, null);
@@ -102,9 +102,7 @@ module.exports.insertBookingData = insertBookingData;
 //   }
 // })
 
-// const bookingData = {
-//   house_id: 99, check_in: '2018-01-01', check_out: '2018-01-02', adults: 2, children: 2, infants: 0, total_occupancy: 4, price: 40, cleaning_fee: 67, service_fee: 20, total_price: 127,
-// };
+// const bookingData = { house_id: 99, check_in: '2018-01-01', check_out: '2018-01-02', adults: 2, children: 2, infants: 0, price: 40, cleaning_fee: 67, service_fee: 20 }
 //
 // insertBookingData(bookingData, (error, results) => {
 //   if (error) {

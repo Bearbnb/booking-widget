@@ -1,6 +1,15 @@
 import React from 'react';
+import styled from 'styled-components';
 
-function Ratings(props) {
+const Stars = styled.span`
+  color: #008489 !important;
+  font-size: 9px !important;
+  height: 10px !important;
+  margin-right: 1px !important;
+  width: 9px !important;
+`;
+
+const Ratings = (props) => {
   const renderStars = () => {
     const starsNum = [];
     const { averageRating } = props;
@@ -8,14 +17,14 @@ function Ratings(props) {
     for (let i = 0; i < averageRating; i++) {
       starsNum.push(<i className="fas fa-star" key={i}></i>);
     }
-    return <div>{starsNum}</div>;
+    return <span>{starsNum}</span>;
   };
 
   return (
-    <div>
+    <Stars>
       {renderStars()}
-    </div>
+    </Stars>
   );
-}
+};
 
 export default Ratings;

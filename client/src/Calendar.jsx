@@ -1,5 +1,76 @@
 import React from 'react';
 import dateFns from 'date-fns';
+import styled from 'styled-components';
+
+const MonthHeader = styled.th`
+  color: rgb(72, 72, 72) !important;
+  font-size: 18px !important;
+  text-align: center !important;
+  padding-top: 10px !important;
+  padding-bottom: 20px !important;
+  caption-side: initial !important;
+  font-weight: bold;
+`;
+
+const DaysHeader = styled.td`
+  color: rgb(117, 117, 117) !important;
+  font-size: 0.85em;
+  left: 0px;
+  padding: 0px 5px;
+`;
+
+const TableBorder = styled.table`
+  border-spacing: 0px !important;
+`;
+
+const DaysBorder = styled.td`
+  width: 25px;
+  height: 15px;
+  border: 1px solid rgb(228, 231, 231);
+  color: rgb(72, 72, 72);
+  background: rgb(255, 255, 255);
+  position: relative !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  width:'100%';
+  padding: 8px;
+`;
+
+const DaysText = styled.span`
+  font-weight: 600 !important;
+  height: 12px !important;
+  line-height: 12px !important;
+  text-align: center !important;
+  width: 38px !important;
+  color: rgb(72, 72, 72) !important;
+  font-size: 14px !important;
+`;
+
+const MonthArrowContainer = styled.div`
+  cursor: pointer !important;
+  background-color: rgb(255, 255, 255) !important;
+  color: rgb(117, 117, 117) !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: rgb(228, 231, 231) !important;
+  border-radius: 3px !important;
+  padding: 6px !important;
+  position: relative;
+  top: -5px;
+  text-align: center !important;
+
+`;
+
+const HideCalendar = styled.div`
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1 !important;
+`;
+
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -17,12 +88,12 @@ class Calendar extends React.Component {
     this.setState({
       selectedDate: date,
     }, (error, results) => {
-          if (error) {
+      if (error) {
         console.log(error)
       } else {
-          callback(results);
+        callback(results);
       }
-    });'MMMM YYYY'
+    });
   }
 
   nextMonthClick() {
@@ -54,15 +125,17 @@ class Calendar extends React.Component {
     return (
       <tr>
         <th className="header" colSpan="1" align="left">
-          <input onClick={this.prevMonthClick} type="button" value="<" />
+          <MonthArrowContainer>
+            <i className="fas fa-arrow-left" onClick={this.prevMonthClick} type="button"></i>
+          </MonthArrowContainer>
         </th>
-        <th colSpan="5">
-          <span>
+        <MonthHeader colSpan="5">
             {dateFns.format(currentMonth, 'MMMM YYYY')}
-          </span>
-        </th>
+        </MonthHeader>
         <th colSpan="1" align="right">
-          <input onClick={this.nextMonthClick} type="button" value=">" />
+          <MonthArrowContainer>
+            <i className="fas fa-arrow-right" onClick={this.nextMonthClick} type="button"></i>
+          </MonthArrowContainer>
         </th>
       </tr>
     );
@@ -74,9 +147,9 @@ class Calendar extends React.Component {
 
     for (let i = 0; i < days.length; i++) {
       daysList.push(
-        <td key={days[i]}>
+        <DaysHeader key={days[i]}>
           {days[i]}
-        </td>
+        </DaysHeader>
       );
     }
     return <tbody className="dateHeader">{daysList}</tbody>
@@ -99,11 +172,11 @@ class Calendar extends React.Component {
         formattedDate = dateFns.format(day, 'D');
         const cloneDay = day;
         days.push(
-          <td onClick={() => this.clickEvents(cloneDay)} key={day[i]}>
-            <span>
+          <DaysBorder onClick={() => this.clickEvents(cloneDay)} key={day[i]}>
+            <DaysText>
               {formattedDate}
-            </span>
-          </td>,
+            </DaysText>
+          </DaysBorder>,
         );
         day = dateFns.addDays(day, 1);
       }
@@ -118,13 +191,15 @@ class Calendar extends React.Component {
   }
 
   render() {
+    const { hideCalendar } = this.props;
     return (
       <div className="calendar">
-        <table>
+        <HideCalendar onClick={hideCalendar} />
+        <TableBorder>
           {this.renderHeader()}
           {this.renderDays()}
           {this.renderCells()}
-        </table>
+        </TableBorder>
       </div>
     );
   }
