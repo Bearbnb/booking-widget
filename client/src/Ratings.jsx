@@ -9,7 +9,7 @@ const Stars = styled.span`
   width: 9px !important;
 `;
 
-function Ratings(props) {
+const Ratings = (props) => {
   const renderStars = () => {
     const starsNum = [];
     const { averageRating } = props;
@@ -25,6 +25,6 @@ function Ratings(props) {
       {renderStars()}
     </Stars>
   );
-}
+};
 
 export default Ratings;

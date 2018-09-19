@@ -4,7 +4,7 @@ const controller = require('../database/index.js');
 
 const app = express();
 
-app.use(express.static('client/dist'));
+app.use('/:id', express.static('client/dist'));
 app.use(bodyParser.json());
 
 app.get('/houses/:id/calendar', (req, res) => {

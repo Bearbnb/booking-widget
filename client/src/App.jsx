@@ -324,10 +324,6 @@ const ChargedText = styled.small`
   color: #484848 !important;
 `;
 
-const testDiv = styled.div`
-  background-color: green;
-`;
-
 
 class App extends React.Component {
   constructor(props) {
@@ -359,6 +355,7 @@ class App extends React.Component {
     this.infantSubClick = this.infantSubClick.bind(this);
     this.bookingButtonClick = this.bookingButtonClick.bind(this);
     this.hideCalendar = this.hideCalendar.bind(this);
+    this.hideGuests = this.hideGuests.bind(this);
   }
 
   componentDidMount() {
@@ -366,10 +363,13 @@ class App extends React.Component {
   }
 
   getCalendarData() {
+    const idPath = window.location.pathname;
+    const id = idPath.substring(1, idPath.length - 1)
+
     const { checkIn } = this.state;
     $.ajax({
       method: 'GET',
-      url: `/houses/1/check_in/${checkIn}`,
+      url: `/houses/${id}/check_in/${checkIn}`,
       success: (results) => {
         this.setState({
           rates: results[0].price,
@@ -382,9 +382,12 @@ class App extends React.Component {
   }
 
   getHouseData() {
+    const idPath = window.location.pathname;
+    const id = idPath.substring(1, idPath.length - 1)
+
     $.ajax({
       method: 'GET',
-      url: '/houses/1',
+      url: `/houses/${id}`,
       success: (results) => {
         this.setState({
           averageRating: results[0].average_rating,
@@ -402,12 +405,14 @@ class App extends React.Component {
   }
 
   postBookingData() {
+    const idPath = window.location.pathname;
+    const id = idPath.substring(1, idPath.length - 1)
     const { checkIn, checkOut, adults, children, infants, rates, cleaningFee, serviceFee, taxes } = this.state;
     $.ajax({
       method: 'POST',
-      url: `/houses/5/check_in/${dateFns.format(checkIn, 'YYYY-MM-DD')}/check_out/${dateFns.format(checkOut, 'YYYY-MM-DD')}`,
+      url: `/houses/${id}/check_in/${dateFns.format(checkIn, 'YYYY-MM-DD')}/check_out/${dateFns.format(checkOut, 'YYYY-MM-DD')}`,
       contentType: 'application/json',
-      data: JSON.stringify({ house_id: 1, check_in: dateFns.format(checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(checkOut, 'YYYY-MM-DD'), adults, children, infants, price: rates, cleaning_fee: cleaningFee, service_fee: serviceFee, taxes }),
+      data: JSON.stringify({ house_id: id, check_in: dateFns.format(checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(checkOut, 'YYYY-MM-DD'), adults, children, infants, price: rates, cleaning_fee: cleaningFee, service_fee: serviceFee, taxes }),
       success: (results) => {
         console.log(JSON.stringify(results))
       },
@@ -520,6 +525,12 @@ class App extends React.Component {
     });
   }
 
+  hideGuests() {
+    this.setState({
+      guestButtonClicked: false,
+    });
+  }
+
   render() {
     const {
       rates, calendarClicked, guestButtonClicked, adults, children, infants, averageRating, ratings, checkIn, checkOut, cleaningFee, serviceFee, taxes,
@@ -602,6 +613,7 @@ class App extends React.Component {
                 childrenSubClick={this.childrenSubClick}
                 infantAddClick={this.infantAddClick}
                 infantSubClick={this.infantSubClick}
+                hideGuests={this.hideGuests}
               />
             ) : (
               <GuestsButton onClick={this.guestButtonClick}>

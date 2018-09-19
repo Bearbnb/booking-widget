@@ -102,6 +102,15 @@ const GuestsCloseButton = styled.div`
   justify-self: end;
 `;
 
+const HideGuests = styled.div`
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1 !important;
+`;
+
 class Guests extends React.Component {
   constructor(props) {
     super(props);
@@ -111,10 +120,11 @@ class Guests extends React.Component {
 
 
   render() {
-    const { adults, children, infants, adultAddClick, adultSubClick, childrenAddClick, childrenSubClick, infantAddClick, infantSubClick, guestButtonClick } = this.props;
+    const { adults, children, infants, adultAddClick, adultSubClick, childrenAddClick, childrenSubClick, infantAddClick, infantSubClick, guestButtonClick, hideGuests } = this.props;
 
     return (
       <div>
+        <HideGuests onClick={hideGuests} />
         <GuestsButton onClick={guestButtonClick}>
           {infants < 1 ? (
             <GuestButtonMargin>
