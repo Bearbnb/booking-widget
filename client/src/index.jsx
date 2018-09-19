@@ -11,4 +11,4 @@ body {
 `
 
 
-render(<App />, document.getElementById('app'))
+render(<App />, document.getElementById('booking-widget'))
