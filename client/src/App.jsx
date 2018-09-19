@@ -52,7 +52,7 @@ class App extends React.Component {
     const { checkIn } = this.state;
     $.ajax({
       method: 'GET',
-      url: `/houses/${id}/check_in/${checkIn}`,
+      url: `http://localhost:4000/houses/${id}/check_in/${checkIn}`,
       success: (results) => {
         this.setState({
           rates: results[0].price,
@@ -70,7 +70,7 @@ class App extends React.Component {
 
     $.ajax({
       method: 'GET',
-      url: `/houses/${id}`,
+      url: `http://localhost:4000/houses/${id}`,
       success: (results) => {
         this.setState({
           averageRating: results[0].average_rating,

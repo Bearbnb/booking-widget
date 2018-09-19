@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const controller = require('../database/index.js');
 
 const app = express();
 
 app.use('/:id', express.static('client/dist'));
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/houses/:id/calendar', (req, res) => {
