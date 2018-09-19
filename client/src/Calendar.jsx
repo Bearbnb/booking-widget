@@ -1,76 +1,8 @@
 import React from 'react';
 import dateFns from 'date-fns';
-import styled from 'styled-components';
-
-const MonthHeader = styled.th`
-  color: rgb(72, 72, 72) !important;
-  font-size: 18px !important;
-  text-align: center !important;
-  padding-top: 10px !important;
-  padding-bottom: 20px !important;
-  caption-side: initial !important;
-  font-weight: bold;
-`;
-
-const DaysHeader = styled.td`
-  color: rgb(117, 117, 117) !important;
-  font-size: 0.85em;
-  left: 0px;
-  padding: 0px 5px;
-`;
-
-const TableBorder = styled.table`
-  border-spacing: 0px !important;
-`;
-
-const DaysBorder = styled.td`
-  width: 25px;
-  height: 15px;
-  border: 1px solid rgb(228, 231, 231);
-  color: rgb(72, 72, 72);
-  background: rgb(255, 255, 255);
-  position: relative !important;
-  cursor: pointer !important;
-  font-size: 14px !important;
-  text-align: center !important;
-  width:'100%';
-  padding: 8px;
-`;
-
-const DaysText = styled.span`
-  font-weight: 600 !important;
-  height: 12px !important;
-  line-height: 12px !important;
-  text-align: center !important;
-  width: 38px !important;
-  color: rgb(72, 72, 72) !important;
-  font-size: 14px !important;
-`;
-
-const MonthArrowContainer = styled.div`
-  cursor: pointer !important;
-  background-color: rgb(255, 255, 255) !important;
-  color: rgb(117, 117, 117) !important;
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-color: rgb(228, 231, 231) !important;
-  border-radius: 3px !important;
-  padding: 6px !important;
-  position: relative;
-  top: -5px;
-  text-align: center !important;
-
-`;
-
-const HideCalendar = styled.div`
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: -1 !important;
-`;
-
+import {
+  MonthHeader, DaysHeader, TableBorder, DaysBorder, DaysText, MonthArrowContainer, HideCalendar,
+} from '../../styles/Calendar';
 
 class Calendar extends React.Component {
   constructor(props) {
