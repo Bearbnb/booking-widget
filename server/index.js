@@ -9,7 +9,7 @@ app.use('/:id', express.static('client/dist'));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/houses/:id/calendar', (req, res) => {
+app.get('/bookings/:id/calendar', (req, res) => {
   controller.findAvailableDates(req.params.id, (error, results) => {
     if (error) {
         console.log(`ERROR findAvailableDates call failed`);
@@ -22,7 +22,7 @@ app.get('/houses/:id/calendar', (req, res) => {
 });
 
 
-app.get('/houses/:id', (req, res) => {
+app.get('/bookings/:id', (req, res) => {
   controller.findHouseData(req.params.id, (error, results) => {
     if (error) {
       console.error(`ERROR findHouseData call failed`);
@@ -35,7 +35,7 @@ app.get('/houses/:id', (req, res) => {
   });
 });
 
-app.get('/houses/:id/check_in/:date', (req, res) => {
+app.get('/bookings/:id/check_in/:date', (req, res) => {
   controller.findHousePrice({ booking_date: `${req.params.date}`, house_id: `${req.params.id}` }, (error, results) => {
     if (error) {
       console.error(`ERROR findHousePrice call failed`)

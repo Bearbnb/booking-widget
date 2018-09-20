@@ -11,7 +11,8 @@
     "start": "nodemon server/index.js",
     "react-dev": "webpack -d --watch",
     "test": "jest",
-    "watch": "jest --watch ./spec/*.js"
+    "watch": "jest --watch ./spec/*.js",
+    "seed": "mysql -u root < schema.sql ; node database/data.js"
   },
   "dependencies": {
     "babel-plugin-transform-export-extensions": "^6.22.0",

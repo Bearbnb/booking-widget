@@ -52,7 +52,7 @@ class App extends React.Component {
     const { checkIn } = this.state;
     $.ajax({
       method: 'GET',
-      url: `http://localhost:4000/houses/${id}/check_in/${checkIn}`,
+      url: `/bookings/${id}/check_in/${checkIn}`,
       success: (results) => {
         this.setState({
           rates: results[0].price,
@@ -70,7 +70,7 @@ class App extends React.Component {
 
     $.ajax({
       method: 'GET',
-      url: `http://localhost:4000/houses/${id}`,
+      url: `/bookings/${id}`,
       success: (results) => {
         this.setState({
           averageRating: results[0].average_rating,
@@ -93,7 +93,7 @@ class App extends React.Component {
     const { checkIn, checkOut, adults, children, infants, rates, cleaningFee, serviceFee, taxes } = this.state;
     $.ajax({
       method: 'POST',
-      url: `/houses/${id}/check_in/${dateFns.format(checkIn, 'YYYY-MM-DD')}/check_out/${dateFns.format(checkOut, 'YYYY-MM-DD')}`,
+      url: `/bookings/${id}/check_in/${dateFns.format(checkIn, 'YYYY-MM-DD')}/check_out/${dateFns.format(checkOut, 'YYYY-MM-DD')}`,
       contentType: 'application/json',
       data: JSON.stringify({ house_id: id, check_in: dateFns.format(checkIn, 'YYYY-MM-DD'), check_out: dateFns.format(checkOut, 'YYYY-MM-DD'), adults, children, infants, price: rates, cleaning_fee: cleaningFee, service_fee: serviceFee, taxes }),
       success: (results) => {
