@@ -1,6 +1,6 @@
-CREATE DATABASE bearbnb;
+CREATE DATABASE bookings;
 
-USE bearbnb;
+USE bookings;
 
 CREATE TABLE houses (
   house_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
