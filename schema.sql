@@ -1,4 +1,4 @@
-CREATE DATABASE bookings;
+-- CREATE DATABASE bookings;
 
 USE bookings;
 

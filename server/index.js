@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/bookings/:id/calendar', (req, res) => {
-  controller.findAvailableDates(req.params.id, (error, results) => {
+  controller.findAvailableDate_s(req.params.id, (error, results) => {
     if (error) {
         console.log(`ERROR findAvailableDates call failed`);
     } else {
@@ -48,7 +48,7 @@ app.get('/bookings/:id/check_in/:date', (req, res) => {
   })
 })
 
-app.post('/houses/:id/check_in/:date/check_out/:date', (req, res) => {
+app.post('/bookings/:id/check_in/:date/check_out/:date', (req, res) => {
   controller.insertBookingData(req.body, (error, results) => {
     if (error) {
       console.log(`ERROR insertBookingData call failed`);
@@ -61,4 +61,4 @@ app.post('/houses/:id/check_in/:date/check_out/:date', (req, res) => {
   });
 });
 
-app.listen(3003, () => console.log('Listening on port 3003...'));
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}...`));

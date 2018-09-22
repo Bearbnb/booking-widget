@@ -8,11 +8,13 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "start": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "start-dev": "nodemon server/index.js",
     "react-dev": "webpack -d --watch",
     "test": "jest",
     "watch": "jest --watch ./spec/*.js",
-    "seed": "mysql -u root < schema.sql ; node database/data.js"
+    "seed": "mysql -u root < schema.sql ; node database/data.js",
+    "seedRDS": "mysql -h andrewtruongngodb.cus3ltbonyl7.us-west-1.rds.amazonaws.com -P 3306 -u AndrewTruongNgo -p < schema.sql ; node database/data.js"
   },
   "dependencies": {
     "babel-plugin-transform-export-extensions": "^6.22.0",
@@ -20,6 +22,7 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "date-fns": "^1.29.0",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "faker": "^4.1.0",
     "font-awesome": "^4.7.0",

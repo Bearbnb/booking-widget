@@ -47,8 +47,9 @@ export const BookingComp = styled.div`
   padding-right: 24px !important;
   border: 1px solid #e4e4e4 !important;
   background-color: #ffffff !important;
-  position: fixed;
+  position: sticky;
   top: 75px;
+  float: right;
 `;
 
 export const BookingMargin = styled.div`
