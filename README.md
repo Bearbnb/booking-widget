@@ -1,13 +1,6 @@
-# Project Name
+# Booking Widget
 
-> Project description
-
-## Related Projects
-
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+> Booking widget for reconstructed AirBnB housing page
 
 ## Table of Contents
 
@@ -21,10 +14,8 @@
 
 ## Requirements
 
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
 - Node 6.13.0
-- etc
+
 
 ## Development
 
@@ -32,8 +23,9 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 From within the root directory:
 
-```sh
-npm install -g webpack
+```js
 npm install
+npm run react-dev
+npm start
 ```
 
